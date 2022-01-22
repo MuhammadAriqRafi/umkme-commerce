@@ -5,10 +5,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WaroengKite</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body{
+            padding: 24px;
+        }
+    </style>
 </head>
 <body>
-    <Header>Header</Header>
+    <%- include('../partials/header.ejs') %> 
+    <%- include('../partials/errorMessage.ejs') %> 
     <%- body %> 
-    <footer>Footer</footer>
+    <footer style="margin-top: 16px;">Footer</footer>
 </body>
 </html>
