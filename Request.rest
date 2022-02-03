@@ -1,0 +1,1 @@
+GET http://umkme-commerce.test/api/products
