@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -37,6 +38,15 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         return $request;
+        $product = Product::create([
+            'title' => $request->title,
+            'slug' => Str::slug($request->title),
+            'desc' => $request->desc,
+            'harga' => $request->harga,
+            'stock' => $request->stock
+        ]);
+
+        return back()->with('success', 'Product berhasil ditambahkan');
     }
 
     /**
@@ -70,7 +80,15 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        return $request;
+        $product = Product::findOrFail($product->id);
+
+        $product->title = $request->title;
+        $product->desc = $request->desc;
+        $product->harga = $request->harga;
+        $product->stock = $request->stock;
+        $product->save();
+
+        return back()->with('success', 'Product berhasil di update');
     }
 
     /**
@@ -81,6 +99,7 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        return $product;
+        $product->delete();
+        return back()->with('success', 'Product berhasil dihapus');
     }
 }

@@ -27,7 +27,8 @@ a {
           justify-content: flex-end;
 }
 
-.main-wrapper header nav ul li a {
+.main-wrapper header nav ul li a,
+.main-wrapper header nav ul li button {
   padding: 16px 32px;
 }
 

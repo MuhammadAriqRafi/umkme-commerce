@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 
@@ -14,17 +17,30 @@ use App\Http\Controllers\ProductController;
 |
 */
 
-Route::name('product')->group(function () {
-    Route::resource('products', ProductController::class)->names([
-        'index' => '.index',
-        'show' => '.show',
-        'create' => '.create',
-        'store' => '.store',
-        'edit' => '.edit',
-        'update' => '.update',
-        'destroy' => '.destroy'
-    ]);
+// !! Routes for Guest
+Route::middleware('guest')->group(function () {
+    Route::get('/', [LoginController::class, 'index'])->name('login');
+    Route::post('/', [LoginController::class, 'authenticate']);
+    Route::get('/forgot-password', [ForgotPasswordController::class, 'index']);
 });
+
+// !! Routes for Admin
+Route::middleware('auth')->group(function () {
+    Route::post('/logout', [LoginController::class, 'logout']);
+    Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
+    Route::name('products')->group(function () {
+        Route::resource('products', ProductController::class)->names([
+            'index' => '.index',
+            'show' => '.show',
+            'create' => '.create',
+            'store' => '.store',
+            'edit' => '.edit',
+            'update' => '.update',
+            'destroy' => '.destroy'
+        ]);
+    });
+});
+
 
 // !! Routes for Admin ONLY
 // Route::middleware('admin')->group(function () {

@@ -1,4 +1,4 @@
-@extends('layout.main')
+@extends('layout.guest')
 
 @section('content')
     <h1>Products Index</h1>

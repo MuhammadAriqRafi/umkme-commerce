@@ -16,7 +16,9 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedSmallInteger('pembeli_id');
+            $table->unsignedtinyInteger('payment_method_id');
             $table->foreign('pembeli_id')->references('id')->on('record_pembeli')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('payment_method_id')->references('id')->on('payment_methods')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }
