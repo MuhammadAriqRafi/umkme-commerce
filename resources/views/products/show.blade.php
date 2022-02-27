@@ -1,26 +1,25 @@
 @extends('layout.admin')
+@section('title', $title)
 
 @section('content')
-
-    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Howdy! {{ auth()->user()->name }}</h1>
-            <div class="btn-toolbar mb-2 mb-md-0">
-                <div class="btn-group me-2">
-                    <button type="button" class="btn btn-sm btn-outline-secondary">Add Product</button>
-                </div>
-            </div>
-        </div>
         
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            <div class="col">
-                <div class="card">
-                    <img src="{{ asset('assets/default-product.png') }}" class="card-img-top" alt="...">
+        <div class="card mb-3" style="max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    {{-- Product Images --}}
+                    @if(count($product->images) != 0)
+                        <img src="{{ asset('storage/'. $product->images[0]->name) }}" class="card-img-top" alt{{ $product->title }}">
+                    @else
+                        <img src="{{ asset('assets/default-product.png') }}" class="card-img-top" alt="{{ $product->title }}">
+                    @endif
+                    {{-- End of Product Images --}}
+                </div>
+                <div class="col-md-8">
                     <div class="card-body">
-                        <h4 class="card-title">{{ $product->title }}</h4>
-                        <p class="card-text">{{ $product->desc }}</p>
-                        <h6 class="card-title">{{ $product->harga }}</h6>
-                        <h6 class="card-title">{{ $product->stock }}</h6>
+                    <h5 class="card-title">{{ $product->title }}</h5>
+                    <p class="card-text">{{ $product->desc }}</p>
+                    <h5 class="card-title">@currency($product->harga)</h5>
+                    <p class="card-text"><small class="text-muted">Sisa stock {{ $product->stock }}</small></p>
                     </div>
                 </div>
             </div>

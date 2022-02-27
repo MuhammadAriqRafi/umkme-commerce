@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\LoginController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\OrderController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,20 +25,12 @@ Route::middleware('guest')->group(function () {
 });
 
 // !! Routes for Admin
-Route::middleware('auth')->group(function () {
-    Route::post('/logout', [LoginController::class, 'logout']);
-    Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
-    Route::name('products')->group(function () {
-        Route::resource('products', ProductController::class)->names([
-            'index' => '.index',
-            'show' => '.show',
-            'create' => '.create',
-            'store' => '.store',
-            'edit' => '.edit',
-            'update' => '.update',
-            'destroy' => '.destroy'
-        ]);
-    });
+Route::middleware('auth')->prefix('/admin')->name('admin.')->group(function () {
+    Route::get('/', [ProductController::class, 'index']);
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+    Route::resource('products', ProductController::class);
+    Route::resource('orders', OrderController::class)->except('create', 'edit');
+    // Route::get('/status/{orderStatus}', [OrderController::class, 'index'])->name('.index.withStatus');
 });
 
 

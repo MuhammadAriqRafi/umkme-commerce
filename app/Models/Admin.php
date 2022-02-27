@@ -13,4 +13,5 @@ class Admin extends Model implements AuthenticatableContract
 
     protected $table = 'admin';
     protected $guarded = ['id'];
+    protected $hidden = ['password'];
 }

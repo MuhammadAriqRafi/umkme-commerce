@@ -1,8 +1,8 @@
 <?php
 
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
-use App\Models\Product;
-use Illuminate\Http\Request;
+use App\Models\PaymentMethod;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,13 +16,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/products', function () {
-    return \App\Models\Product::all('title', 'desc', 'harga')->load('orders');
+Route::get('/products', [ProductController::class, 'getProduct']);
+Route::post('/orders', [OrderController::class, 'store']);
+Route::get('/payment-methods', function () {
+    return PaymentMethod::all();
 });
-
-Route::middleware(['auth:sanctum'])->group(function () {
-    Route::post('/products', [ProductController::class, 'store']);
-});
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });

@@ -16,7 +16,7 @@ class Order extends Model
         return $this->belongsToMany(Product::class, 'order_product', 'order_id', 'product_id');
     }
 
-    public function paymentMethods()
+    public function paymentMethod()
     {
         return $this->belongsTo(PaymentMethod::class);
     }
@@ -24,5 +24,10 @@ class Order extends Model
     public function pembeli()
     {
         return $this->belongsTo(RecordPembeli::class);
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(OrderStatus::class);
     }
 }
