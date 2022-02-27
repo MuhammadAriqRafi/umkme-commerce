@@ -66,31 +66,19 @@ class DatabaseSeeder extends Seeder
             'status' => 'Canceled'
         ]);
 
-        Order::create([
+        $order1 = Order::create([
             'pembeli_id' => 1,
             'payment_method_id' => 1,
             'status_id' => 2
         ]);
 
-        Order::create([
+        $order2 = Order::create([
             'pembeli_id' => 2,
             'payment_method_id' => 2,
             'status_id' => 1
         ]);
 
-        OrderProduct::create([
-            'order_id' => 1,
-            'product_id' => 1
-        ]);
-
-        OrderProduct::create([
-            'order_id' => 1,
-            'product_id' => 3
-        ]);
-
-        OrderProduct::create([
-            'order_id' => 2,
-            'product_id' => 2
-        ]);
+        $order1->products()->attach([2, 3, 4]);
+        $order2->products()->attach([1, 2, 3]);
     }
 }
