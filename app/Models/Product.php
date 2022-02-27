@@ -9,6 +9,7 @@ class Product extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'id';
     protected $guarded = ['id'];
 
     public function orders()

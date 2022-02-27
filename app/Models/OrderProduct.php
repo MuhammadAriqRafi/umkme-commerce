@@ -10,5 +10,6 @@ class OrderProduct extends Model
     use HasFactory;
 
     public $timestamps = false;
+    protected $primaryKey = null;
     protected $table = 'order_product';
 }
