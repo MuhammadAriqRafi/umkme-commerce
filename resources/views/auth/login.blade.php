@@ -34,7 +34,6 @@
             
             <form action="/" method="POST">
                 @csrf
-                {{-- <img class="mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57"> --}}
                 <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
                 @if(session()->has('error'))
@@ -55,7 +54,6 @@
 
                 <button class="w-100 btn btn-lg btn-primary mb-3" type="submit">Sign in</button>
             </form>
-            <a href="/forgot-password">Lupa password?</a>
         </main>
     </body>
 </html>

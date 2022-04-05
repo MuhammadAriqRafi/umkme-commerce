@@ -14,30 +14,33 @@
                         <h5 class="modal-title" id="myModalLabel">Add Product</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form action="{{ route('admin.products.store') }}" method="POST" id="createProduct">
+                    <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data" id="createProduct">
                         @csrf
                         <div class="modal-body">
                             <div class="mb-3">
+                                <label for="image" class="col-form-label">Image</label>
+                                <img class="img-preview-add img-fluid rounded-3 mb-3">
+                                <input type="file" class="form-control" id="image" name="image" onchange="previewImage(this, 'img-preview-add')">
+                                <span class="error-message image_error text-danger"></span>
+                            </div>
+                            <div class="mb-3">
                                 <label for="title" class="col-form-label">Title</label>
-                                <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}">
+                                <input type="text" class="form-control" id="title" name="title" onclick="disableIsInvalidClass(this)">
                                 <span class="error-message title_error text-danger"></span>
-                                @error('title')
-                                    {{ $message }}
-                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="harga" class="col-form-label">Harga</label>
-                                <input type="number" class="form-control" id="harga" name="harga" value="{{ old('harga') }}">
+                                <input type="number" class="form-control" id="harga" name="harga" onclick="disableIsInvalidClass(this)">
                                 <span class="error-message harga_error text-danger"></span>
                             </div>
                             <div class="mb-3">
                                 <label for="stock" class="col-form-label">Stock</label>
-                                <input type="number" min="1" class="form-control" id="stock" name="stock" value="{{ old('stock') }}">
+                                <input type="number" min="1" class="form-control" id="stock" name="stock" onclick="disableIsInvalidClass(this)">
                                 <span class="error-message stock_error text-danger"></span>
                             </div>
                             <div class="mb-3">
                                 <label for="desc" class="col-form-label">Description</label>
-                                <textarea class="form-control" id="desc" name="desc">{{ old('desc') }}</textarea>
+                                <textarea class="form-control" id="desc" onclick="disableIsInvalidClass(this)" name="desc">{{ old('desc') }}</textarea>
                                 <span class="error-message desc_error text-danger"></span>
                             </div>
                         </div>
@@ -76,15 +79,11 @@
         <tbody>
             @foreach ($products as $product)
                 <tr>
-                    <td>
-                        {{-- Product Images --}}
-                        @if(count($product->images) != 0)
-                            <img src="{{ asset('storage/'. $product->images[0]->name) }}" width="128" class="card-img-top" alt="{{ $product->title }}">
-                        @else
-                            <img src="{{ asset('assets/default-product.png') }}" width="128" class="card-img-top" alt="{{ $product->title }}">
-                        @endif
-                        {{-- End of Product Images --}}
-                    </td>
+                    @if($product->image)
+                        <td><img src="{{ asset($product->image) }}" height="100" width="100" class="rounded" alt="{{ $product->name }} Image"></td>
+                    @else
+                        <td><img src="{{ asset('assets/default-product.png') }}" height="100" width="100" class="rounded" alt="{{ $product->name }} Image"></td>
+                    @endif
                     <td>{{ $product->title }}</td>
                     <td>Rp. @currency($product->harga)</td>
                     <td>@currency($product->stock)</td>
@@ -111,6 +110,10 @@
 @section('script')
 
     <script>
+        const disableIsInvalidClass = (element) => {
+            $(element).removeClass('is-invalid');
+        }
+
         // TODO: Add Product
         $('#createProduct').on('submit', function(e){
             e.preventDefault();
@@ -128,19 +131,19 @@
                 success: function (response) {
                     if(response.status === 0){
                         $.each(response.error, function (prefix, value) { 
-                            $('span.' + prefix + '_error').text(value[0])
+                            $('span.' + prefix + '_error').text(value[0]);
+                            $(`#createProduct #${prefix}`).addClass('is-invalid');
                         });
                     } else {
                         let deleteUrl = `{{ route('admin.products.destroy', ':id') }}`;
                         deleteUrl = deleteUrl.replace(':id', response.data.id);
                         let editUrl = `{{ route('admin.products.edit', ':id') }}`;
                         editUrl = editUrl.replace(':id', response.data.id);
+                        let imageName = response.data.image != null ? `storage/${response.data.image}` : 'assets/default-product.png';
 
                         $('#productTable tbody').prepend(`
                             <tr>
-                                <td>
-                                    <img src="http://umkme-commerce.test/assets/default-product.png" width="128" class="card-img-top" alt="${response.data.title}">
-                                </td>
+                                <td><img src="{{ asset('${imageName}') }}" height="100" width="100" class="rounded" alt="${response.data.name} Image"></td>
                                 <td>${response.data.title}</td>
                                 <td>Rp. ${response.data.harga}</td>
                                 <td>${response.data.stock}</td>

@@ -18,6 +18,7 @@ class CreateProductsTable extends Migration
             $table->string('title')->unique();
             $table->string('slug')->unique();
             $table->text('desc')->nullable();
+            $table->string('image')->nullable();
             $table->unsignedMediumInteger('harga');
             $table->unsignedMediumInteger('stock');
             $table->timestamps();
