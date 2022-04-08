@@ -1,0 +1,47 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+a {
+    display: inline-block;
+    text-decoration: none;
+    font-weight: 700;
+    color: black;
+}
+
+.main-wrapper {
+    max-width: 1154px;
+    margin: 0 auto;
+
+    header {
+        nav {
+            ul {
+                list-style: none;
+                display: flex;
+                justify-content: flex-end;
+
+                li {
+                    a,
+                    button {
+                        padding: 16px 32px;
+                    }
+                }
+            }
+        }
+    }
+
+    .product {
+        width: 100%;
+        margin-top: 56px;
+        display: flex;
+        gap: 24px;
+        justify-content: space-between;
+
+        &__desc {
+            font-weight: 400;
+            margin: 16px 0 24px;
+        }
+    }
+}
